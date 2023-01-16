@@ -1,7 +1,7 @@
 name: Pushing to container registry
 on:
   push:
-    branches: [master]
+    branches: [main]
 
   jobs:
     push-gcr:
