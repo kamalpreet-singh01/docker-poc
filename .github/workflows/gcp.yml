@@ -10,38 +10,38 @@ jobs:
     env:
       IMAGE_NAME: react-dummy
       PROJECT_ID: deep-district-374519
-      steps:
-        - name: Checkout
-          uses: actions
+    steps:
+      - name: Checkout
+        uses: actions
 
-        - uses: google-github-actions/setup-gcloud@master
-          with:
-            service_account_key: key
-            project_id: deep-district-374519
-            export_default_credentials: true
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_key: key
+          project_id: deep-district-374519
+          export_default_credentials: true
 
-        - name: Build Docker Image
-          run: docker build -t $IMAGE_NAME:latest .
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_NAME:latest .
 
-        - name: Configure docker client
-          run: |-
-            gcloud auth configure-docker --quiet
-            gcloud auth configure-docker us-west2-docker.pkg.dev --quiet
+      - name: Configure docker client
+        run: |-
+          gcloud auth configure-docker --quiet
+          gcloud auth configure-docker us-west2-docker.pkg.dev --quiet
 
-        - name: Push Docker Image to Container Registry (GCR)
-          env:
-            GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
-          run: |-
-            docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
-            docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
-            docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
-            docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+      - name: Push Docker Image to Container Registry (GCR)
+        env:
+          GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
+        run: |-
+          docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+          docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+          docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
 
-        - name: Push Docker Image to Artifact Registry
-          env:
-            GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
-          run: |-
-            docker tag $IMAGE_NAME:latest us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
-            docker tag $IMAGE_NAME:latest us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
-            docker push us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
-            docker push us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
+      - name: Push Docker Image to Artifact Registry
+        env:
+          GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
+        run: |-
+          docker tag $IMAGE_NAME:latest us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
+          docker push us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
+          docker push us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
