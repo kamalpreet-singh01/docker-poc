@@ -12,11 +12,11 @@ jobs:
       PROJECT_ID: deep-district-374519
     steps:
       - name: Checkout
-        uses: actions
+        uses: actions/checkout@v2
 
       - uses: google-github-actions/setup-gcloud@master
         with:
-          service_account_key: key
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
           project_id: deep-district-374519
           export_default_credentials: true
 
