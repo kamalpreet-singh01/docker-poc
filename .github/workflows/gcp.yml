@@ -8,7 +8,7 @@ jobs:
     name: push to gcr
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: reactv1
+      IMAGE_NAME: poc-01
       PROJECT_ID: deep-district-374519
     steps:
       - name: Checkout
